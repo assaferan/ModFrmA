@@ -8,7 +8,7 @@ freeze;
                          
    FILE: newforms.m
 
-   $Header: /home/was/magma/packages/ModFrm/code/RCS/newforms.m,v 1.12 2002/05/30 10:03:43 was Exp was $
+   $Header: /home/was/magma/packages/ModFrmA/code/RCS/newforms.m,v 1.12 2002/05/30 10:03:43 was Exp was $
 
    $Log: newforms.m,v $
 
@@ -76,7 +76,7 @@ import "modular_symbols.m" : MF_ModularSymbols;
 import "predicates.m": SpaceType, AssociatedSpaceOverZ;
 
 procedure GiveNewformItsParent(f, which_newform)
-   assert Type(f) eq ModFrmElt;
+   assert Type(f) eq ModFrmAElt;
 
    M := CopyOfDefiningModularFormsObject(Parent(f));
    M`dimension := Degree(f);
@@ -115,10 +115,10 @@ procedure GiveAllNewformsTheirParents(new_forms, first)
 end procedure;
 
 function NumberOfGalQbarOverQConjugateNewforms(A)
-   assert Type(A) eq ModSym;
+   assert Type(A) eq ModSymA;
    assert Type(BaseField(A)) in {FldRat, FldCyc};
 
-   // The formula is simple because the ModularSymbols(ModFrm) 
+   // The formula is simple because the ModularSymbols(ModFrmA) 
    // intrinsic is supposed to return a character defined over 
    // a field of minimal degree.
    assert EulerPhi(Order(DirichletCharacter(A))) eq Degree(BaseField(A));
@@ -129,7 +129,7 @@ end function;
 
 
 function NumberOfGalQbarOverQConjugateEisensteinSeries(f)
-   assert Type(f) eq ModFrmElt;
+   assert Type(f) eq ModFrmAElt;
    assert IsEisensteinSeries(f);
 
    chi, psi := Explode(EisensteinData(f));
@@ -140,13 +140,13 @@ end function;
 
 
 function CreateNewformsFromModularSymbolsNewform(M, A)
-   assert Type(M) eq ModFrm;
-   assert Type(A) eq ModSym;
+   assert Type(M) eq ModFrmA;
+   assert Type(A) eq ModSymA;
    assert Type(BaseField(A)) in {FldRat, FldCyc};
 
    ans := [* *];
    for i in [1..NumberOfGalQbarOverQConjugateNewforms(A)] do
-      f := New(ModFrmElt);
+      f := New(ModFrmAElt);
       f`mf_modular_symbols := A;
       f`parent := M;
       f`is_newform := true;
@@ -169,13 +169,13 @@ end function;
 
 
 function ComputeCuspidalNewformsUsingModuleOfSupersingularPoints(M)
-   assert Type(M) eq ModFrm;
+   assert Type(M) eq ModFrmA;
 
    error "ComputeCuspidalNewformsUsingModuleOfSupersingularPoints -- Not programmed.";
 end function;
 
 function ComputeCuspidalNewformsUsingBrandtModule(M)
-   assert Type(M) eq ModFrm;
+   assert Type(M) eq ModFrmA;
 
    error "ComputeCuspidalNewformsUsingBrandtModule -- Not programmed.";
 
@@ -185,7 +185,7 @@ end function;
 
 
 function ComputeCuspidalNewformsUsingModularSymbols(M, Proof)
-   assert Type(M) eq ModFrm;
+   assert Type(M) eq ModFrmA;
    assert IsCuspidal(M);
 
    modsym := [NewSubspace(m) : m in MF_ModularSymbols(M,+1)];
@@ -206,7 +206,7 @@ function DivideNewEisensteinSeriesIntoOrbits(E)
    if #E eq 0 then
       return [* *];
    end if;
-   assert Type(E[1]) eq ModFrmElt;
+   assert Type(E[1]) eq ModFrmAElt;
    assert IsEisensteinSeries(E[1]);
 
    ans := [* *];
@@ -245,7 +245,7 @@ function DivideNewEisensteinSeriesIntoOrbits(E)
 end function;
 
 function ComputeEisensteinNewforms(M)
-   assert Type(M) eq ModFrm;
+   assert Type(M) eq ModFrmA;
 
    // Let E be the collection of new Eisenstein series.
    E := [* *];
@@ -265,10 +265,10 @@ function ComputeEisensteinNewforms(M)
 end function;
 
 function ComputeCuspidalNewformsUsingHeckeOperators(M)
-   assert Type(M) eq ModFrm;
+   assert Type(M) eq ModFrmA;
 end function;
 
-intrinsic NumberOfNewformClasses(M::ModFrm : Proof := true) -> RngIntElt
+intrinsic NumberOfNewformClasses(M::ModFrmA : Proof := true) -> RngIntElt
 {The number of Galois conjugacy-classes of newforms associated to M.}
    require Characteristic(BaseRing(M)) eq 0 : 
            "Argument 1 must have characteristic 0.";
@@ -276,8 +276,8 @@ intrinsic NumberOfNewformClasses(M::ModFrm : Proof := true) -> RngIntElt
    return #Newforms(M : Proof := Proof);   
 end intrinsic;
 
-intrinsic Newform(M::ModFrm, i::RngIntElt,  
-                  j::RngIntElt : Proof := true) -> ModFrmElt
+intrinsic Newform(M::ModFrmA, i::RngIntElt,  
+                  j::RngIntElt : Proof := true) -> ModFrmAElt
 {The jth Galois-conjugate newform in the ith orbit.}
    require Characteristic(BaseRing(M)) eq 0 : 
            "Argument 1 must have characteristic 0.";
@@ -290,7 +290,7 @@ intrinsic Newform(M::ModFrm, i::RngIntElt,
    return orbit[j];
 end intrinsic;
 
-intrinsic Newform(M::ModFrm, i::RngIntElt : Proof := true) -> ModFrmElt
+intrinsic Newform(M::ModFrmA, i::RngIntElt : Proof := true) -> ModFrmAElt
 {The first Galois-conjugate newform in the ith orbit.}
    require Characteristic(BaseRing(M)) eq 0 : 
            "Argument 1 must have characteristic 0.";
@@ -301,12 +301,12 @@ intrinsic Newform(M::ModFrm, i::RngIntElt : Proof := true) -> ModFrmElt
    return N[i][1];
 end intrinsic;
 
-intrinsic Newform(E::CrvEll) -> ModFrmElt
+intrinsic Newform(E::CrvEll) -> ModFrmAElt
 {Same as ModularForm(E)}
    return ModularForm(E);
 end intrinsic;
 
-intrinsic Newforms(M::ModFrm : Proof := true) -> List
+intrinsic Newforms(M::ModFrmA : Proof := true) -> List
 {List of the newforms associated to M, divided up into Galois orbits.}
 
 /*   require Characteristic(BaseRing(M)) eq 0 : 
@@ -359,7 +359,7 @@ intrinsic Newforms(M::ModFrm : Proof := true) -> List
 end intrinsic;
 
 
-intrinsic Newforms(I::[Tup], M::ModFrm  : Proof := true) -> SeqEnum
+intrinsic Newforms(I::[Tup], M::ModFrmA  : Proof := true) -> SeqEnum
 {
 The newforms associated to M with prespecified eigenvalues.
 Here I is a sequence 
@@ -420,14 +420,14 @@ function IsNumeric(s)
    return true;
 end function;
 
-intrinsic Newform(label::MonStgElt : Proof := true)  -> ModFrmElt
+intrinsic Newform(label::MonStgElt : Proof := true)  -> ModFrmAElt
 {The Galois-conjugacy class(es) of newforms described
 by the label.  See the handbook for a description of the
 notation used for the label.}
    return Newforms(label : Proof := Proof)[1];
 end intrinsic;
 
-intrinsic Newforms(label::MonStgElt : Proof := true)  -> ModFrmElt
+intrinsic Newforms(label::MonStgElt : Proof := true)  -> ModFrmAElt
 {"} // "
    require #label gt 0 : "Invalid label.";
    // defaults
@@ -507,7 +507,7 @@ intrinsic Newforms(label::MonStgElt : Proof := true)  -> ModFrmElt
 end intrinsic;
 
 
-intrinsic DirichletCharacter(f::ModFrmElt) -> GrpDrchElt
+intrinsic DirichletCharacter(f::ModFrmAElt) -> GrpDrchElt
 {Suppose f is a newform, created using the Newform command.
 This returns a Dirichlet character that is,
 up to Galois conjugacy, the Nebentypus character of f.}
@@ -525,7 +525,7 @@ up to Galois conjugacy, the Nebentypus character of f.}
    return f`nebentype;
 end intrinsic;
 
-intrinsic LinearCombinationOfEigenformsOverC(f::ModFrmElt) -> SeqEnum
+intrinsic LinearCombinationOfEigenformsOverC(f::ModFrmAElt) -> SeqEnum
 {Write f as a complex linear combination of eigenforms for the 
 anemic Hecke algebra.}
    require Type(BaseRing(Parent(f))) in {FldRat, RngInt} : 
