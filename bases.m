@@ -20,7 +20,7 @@ freeze;
       
  ***************************************************************************/
 
-intrinsic Basis(M::ModFrm) -> SeqEnum
+intrinsic Basis(M::ModFrmA) -> SeqEnum
 {The canonical basis of M.}
 
 /*
@@ -41,7 +41,7 @@ intrinsic Basis(M::ModFrm) -> SeqEnum
 end intrinsic;
 
 
-intrinsic '.'(M::ModFrm, i::RngIntElt) -> ModFrmElt
+intrinsic '.'(M::ModFrmA, i::RngIntElt) -> ModFrmAElt
 {The i-th basis vector of M.}
    requirege i,1;
    require i le Dimension(M) : 

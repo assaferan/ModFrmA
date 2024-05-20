@@ -30,7 +30,7 @@ freeze;
    > SetVerbose("ModularSymbols",2);  
    > load"/magma/donnelly/package/Geometry/ModSym/tests.m";
    > DoTests(100);
-   > Attach("/magma/donnelly/package/Geometry/ModFrm/tests.m");
+   > Attach("/magma/donnelly/package/Geometry/ModFrmA/tests.m");
    > BugHunter([1..100], 1, 0.5);
 
  ****************************************************************************/
@@ -408,7 +408,7 @@ end procedure;
 
 
 procedure TestLinAlg(how_hard : quiet:=false)
-   // Check that the echelonizing/saturation done in ModFrm
+   // Check that the echelonizing/saturation done in ModFrmA
    // agrees with the corresponding stuff in ModSym
    M := RandomSpace(how_hard); 
    S := CuspidalSubspace(M);
@@ -433,7 +433,7 @@ end procedure;
 
 
 intrinsic TestHecke(how_hard::RngElt : N:=0, k:=0, chars:=0) 
-{Check that some Hecke operators seems to be working correctly on a random ModFrm}
+{Check that some Hecke operators seems to be working correctly on a random ModFrmA}
    if N eq 0 then N := Random([2..Round(how_hard*150)]); end if;
    if k eq 0 then k := Random([1,2] cat [1..Round(how_hard*10)+2]); end if;
    chars_given := chars cmpne 0;

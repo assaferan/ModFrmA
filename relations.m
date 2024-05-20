@@ -27,7 +27,7 @@ forward RSpaceElement,
         qRelationsOfDegree;
 
 
-intrinsic Relations(M::ModFrm, d::RngIntElt, prec::RngIntElt) -> SeqEnum, SeqEnum
+intrinsic Relations(M::ModFrmA, d::RngIntElt, prec::RngIntElt) -> SeqEnum, SeqEnum
 {All relations of degree d satisfied by the q-expansions of Basis(M), 
 computed to precision prec.}
    require d ge 1 : "Argument 2 must be at least 1.";

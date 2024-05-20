@@ -13,7 +13,7 @@ freeze;
 
 import "misc.m" :       EchelonPowerSeriesSequence;
 
-import "creation.m" : create_ModFrmElt_from_theta_data;
+import "creation.m" : create_ModFrmAElt_from_theta_data;
 
 import "predicates.m":  SpaceType;
 
@@ -31,7 +31,7 @@ import "q-expansions.m": q_expansion_basis_using_auxiliary;
    The same notation is used here.
 */
 
-intrinsic WeightOneHalfData(M::ModFrm) -> List
+intrinsic WeightOneHalfData(M::ModFrmA) -> List
 {A list of tuples describing a basis of the given space of forms of weight 1/2.
 Each tuple is a pair <psi, t>, which designates the theta series
 obtained by summing psi(n)*q^(t*n^2) over all integers n. }
@@ -253,7 +253,7 @@ end function;
        ***********************************************/
 
 
-intrinsic HalfIntegralWeightForms(N::RngIntElt, w::FldRatElt) -> ModFrm
+intrinsic HalfIntegralWeightForms(N::RngIntElt, w::FldRatElt) -> ModFrmA
 {The space of forms on Gamma0(N) with weight w.  
  The weight must be a positive element of Z+1/2, and N must be a multiple of 4.} 
    require N mod 4 eq 0 : "The level N must be divisible by 4.";
@@ -261,7 +261,7 @@ intrinsic HalfIntegralWeightForms(N::RngIntElt, w::FldRatElt) -> ModFrm
 end intrinsic;
 
 
-intrinsic HalfIntegralWeightForms(chi::GrpDrchElt, w::FldRatElt) -> ModFrm
+intrinsic HalfIntegralWeightForms(chi::GrpDrchElt, w::FldRatElt) -> ModFrmA
 {The space of forms with character chi and weight w, 
  which must be a positive element of Z+1/2.}
 
@@ -270,7 +270,7 @@ intrinsic HalfIntegralWeightForms(chi::GrpDrchElt, w::FldRatElt) -> ModFrm
    N := Modulus(chi);
    require N mod 4 eq 0 : "The modulus of the character must be divisible by 4.";
    
-   M := New(ModFrm);
+   M := New(ModFrmA);
    M`type := "full_half_int";
    M`is_cuspidal := false;
    M`base_ring := Integers();
@@ -281,7 +281,7 @@ intrinsic HalfIntegralWeightForms(chi::GrpDrchElt, w::FldRatElt) -> ModFrm
    return M;
 end intrinsic;
 
-intrinsic HalfIntegralWeightForms(G::GrpPSL2, w::FldRatElt) -> ModFrm
+intrinsic HalfIntegralWeightForms(G::GrpPSL2, w::FldRatElt) -> ModFrmA
 {The space of forms on the congruence subgroup G of weight w, 
 which must be a positive element of Z+1/2.}
 
@@ -291,7 +291,7 @@ which must be a positive element of Z+1/2.}
    require N mod 4 eq 0 : "The level N must be divisible by 4.";
 
    if IsGamma1(G) then
-      M := New(ModFrm);
+      M := New(ModFrmA);
       M`type := "full_half_int";
       M`is_cuspidal := false;
       M`base_ring := Integers();

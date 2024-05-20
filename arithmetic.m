@@ -37,11 +37,11 @@ import "predicates.m" : Element;
 
 function CreateModularFormFromOperation(op,g,h)
    assert op in {"*", "-", "+", "scalar"};
-   if Type(g) eq ModFrmElt then
+   if Type(g) eq ModFrmAElt then
       assert BaseRing(Parent(g)) eq BaseRing(Parent(h));
    end if;
-   assert Type(h) eq ModFrmElt;
-   f := New(ModFrmElt);
+   assert Type(h) eq ModFrmAElt;
+   f := New(ModFrmAElt);
    f`created_from := <op,g,h>;
    if op eq "scalar" then
       f`parent := Parent(h);
@@ -61,7 +61,7 @@ function CreateModularFormFromOperation(op,g,h)
             k := kg + kh;   if IsIntegral(k) then k := Integers()!k; end if;
             if k eq 1 then
                // weight 1 spaces are not normally allowed, but let's sneak some in 
-               M := New(ModFrm);
+               M := New(ModFrmA);
                M`type := "full";
                M`base_ring := Integers();
                M`weight := k;
@@ -121,7 +121,7 @@ end function;
 // or to parents that have an unambiguous relationship;
 // use of general coercion here is too loose 
 
-intrinsic '+'(f::ModFrmElt,g::ModFrmElt) -> ModFrmElt 
+intrinsic '+'(f::ModFrmAElt,g::ModFrmAElt) -> ModFrmAElt 
    {Sum of modular forms}
    require BaseRing(Parent(f)) eq BaseRing(Parent(g)) : 
      "Arguments 1 and 2 have incompatible coefficient rings.";
@@ -140,7 +140,7 @@ intrinsic '+'(f::ModFrmElt,g::ModFrmElt) -> ModFrmElt
 
 end intrinsic; 
 
-intrinsic '-'(f::ModFrmElt,g::ModFrmElt) -> ModFrmElt 
+intrinsic '-'(f::ModFrmAElt,g::ModFrmAElt) -> ModFrmAElt 
    {Difference of modular forms}
    require BaseRing(Parent(f)) eq BaseRing(Parent(g)) : 
      "Arguments 1 and 2 have incompatible coefficient rings.";
@@ -148,33 +148,33 @@ intrinsic '-'(f::ModFrmElt,g::ModFrmElt) -> ModFrmElt
    return f+ (-1)*g;
 end intrinsic; 
 
-intrinsic '-'(f::ModFrmElt, g::RngSerPowElt) -> RngSerPowElt
+intrinsic '-'(f::ModFrmAElt, g::RngSerPowElt) -> RngSerPowElt
 {"} // "
    t, _ := IsCoercible(Parent(g),PowerSeries(f,1));
    require t : "The q-expansion of argument 1 must be coercible into the parent of argument 2.";
    return f+(-g);
 end intrinsic;
 
-intrinsic '-'(g::RngSerPowElt, f::ModFrmElt) -> RngSerPowElt
+intrinsic '-'(g::RngSerPowElt, f::ModFrmAElt) -> RngSerPowElt
 {"} // "
    t, _ := IsCoercible(Parent(g),PowerSeries(f,1));
    require t : "The q-expansion of argument 1 must be coercible into the parent of argument 2.";
    return g+(-f);
 end intrinsic;
 
-intrinsic '-'(f::ModFrmElt) -> ModFrmElt
+intrinsic '-'(f::ModFrmAElt) -> ModFrmAElt
 {"} // "
    return (-1)*f;
 end intrinsic;
 
-intrinsic '+'(g::RngSerPowElt, f::ModFrmElt) -> RngSerPowElt
+intrinsic '+'(g::RngSerPowElt, f::ModFrmAElt) -> RngSerPowElt
 {Sum of modular forms}
    t, _ := IsCoercible(Parent(g),PowerSeries(f,1));
    require t : "The q-expansion of argument 1 must be coercible into the parent of argument 2.";
    return f+g;
 end intrinsic;
 
-intrinsic '+'(f::ModFrmElt, g::RngSerPowElt) -> RngSerPowElt
+intrinsic '+'(f::ModFrmAElt, g::RngSerPowElt) -> RngSerPowElt
 {"} // "
    t, _ := IsCoercible(Parent(g),PowerSeries(f,1));
    require t : "The q-expansion of argument 1 must be coercible into the parent of argument 2.";
@@ -187,7 +187,7 @@ intrinsic '+'(f::ModFrmElt, g::RngSerPowElt) -> RngSerPowElt
    end if;
 end intrinsic;
 
-intrinsic '*'(f::ModFrmElt, T::AlgMatElt) -> ModFrmElt
+intrinsic '*'(f::ModFrmAElt, T::AlgMatElt) -> ModFrmAElt
 {Image of modular form f under the matrix T acting on Parent(f)}
    require Degree(Parent(T)) eq Dimension(Parent(Element(f))) : 
          "The degrees of arguments 1 and 2 are incompatible.";
@@ -204,7 +204,7 @@ intrinsic '*'(f::ModFrmElt, T::AlgMatElt) -> ModFrmElt
    return Parent(f)!(Element(f)*T);
 end intrinsic;
 
-intrinsic '*'(f::ModFrmElt, gamma::GrpPSL2Elt) -> ModFrmElt
+intrinsic '*'(f::ModFrmAElt, gamma::GrpPSL2Elt) -> ModFrmAElt
 {Image of modular form f under the matrix gamma}
    require IsEisenstein(Parent(f)) :
     "Form must be eisenstein. Right now we don't know how to transform cusp forms";
@@ -212,21 +212,21 @@ intrinsic '*'(f::ModFrmElt, gamma::GrpPSL2Elt) -> ModFrmElt
 end intrinsic;
 
 
-intrinsic '*'(f::ModFrmElt, x::RngElt) -> ModFrmElt
+intrinsic '*'(f::ModFrmAElt, x::RngElt) -> ModFrmAElt
    {Product of modular form and scalar}
    require x in BaseRing(Parent(f)) : 
         "Argument 1 must be in the base ring of the parent of argument 2.";
    return x*f;
 end intrinsic;
 
-intrinsic '*'(x::RngElt, f::ModFrmElt) -> ModFrmElt
+intrinsic '*'(x::RngElt, f::ModFrmAElt) -> ModFrmAElt
    {"} // "
    if x eq 1 then return f; end if;
 
    M := Parent(f);
    if x notin BaseRing(M) then 
       if ISA(Type(x), Mtrx) then 
-         error "Invalid types Mtrx*ModFrmElt. Note that Hecke operators act from the right.";
+         error "Invalid types Mtrx*ModFrmAElt. Note that Hecke operators act from the right.";
       else 
          MR := BaseExtend(M, Parent(x));
          return x * MR!f;
@@ -235,7 +235,7 @@ intrinsic '*'(x::RngElt, f::ModFrmElt) -> ModFrmElt
 
    if Weight(f) eq 1 and assigned f`created_from and f`created_from[1] eq "*" then
       _, f1, f2 := Explode(f`created_from);
-      ans := New(ModFrmElt);
+      ans := New(ModFrmAElt);
       ans`parent := f`parent;
       ans`created_from := <"*", x*f1, f2>;
       return ans;
@@ -249,7 +249,7 @@ intrinsic '*'(x::RngElt, f::ModFrmElt) -> ModFrmElt
       end if;
       if assigned f`q_expansion and AbsolutePrecision(f`q_expansion) ge PrecisionBound(Parent(f)) then
          // the element is determined by its (known) q-expansion
-         ans := New(ModFrmElt);
+         ans := New(ModFrmAElt);
          ans`parent := f`parent;
          ans`q_expansion := x*f`q_expansion;
          return ans;
@@ -259,14 +259,14 @@ intrinsic '*'(x::RngElt, f::ModFrmElt) -> ModFrmElt
    return M!(x*Element(f));
 end intrinsic;
 
-intrinsic '/'(f::ModFrmElt, x::RngElt) -> ModFrmElt
+intrinsic '/'(f::ModFrmAElt, x::RngElt) -> ModFrmAElt
    {"} // "
    require x ne 0 : "Division by zero.";
    require 1/x in BaseRing(Parent(f)) : "Argument 2 is not in the base ring of argument 1.";
    return (1/x)*f;
 end intrinsic;
 
-intrinsic '^'(f::ModFrmElt, n::RngElt) -> ModFrmElt
+intrinsic '^'(f::ModFrmAElt, n::RngElt) -> ModFrmAElt
    {Power of modular form, in the appropriate modular forms space}
    requirege  n, 1;
    g := f;
@@ -276,14 +276,14 @@ intrinsic '^'(f::ModFrmElt, n::RngElt) -> ModFrmElt
    return g;
 end intrinsic;
 
-intrinsic '*'(f::ModFrmElt,g::ModFrmElt) -> ModFrmElt 
+intrinsic '*'(f::ModFrmAElt,g::ModFrmAElt) -> ModFrmAElt 
    {Product of modular forms, in the appropriate modular forms space}
    require BaseRing(Parent(f)) eq BaseRing(Parent(g)) : 
      "Arguments 1 and 2 have incompatible coefficient rings.";
    return CreateModularFormFromOperation("*",f,g);   
 end intrinsic; 
 
-intrinsic IsZero(f::ModFrmElt) -> BoolElt
+intrinsic IsZero(f::ModFrmAElt) -> BoolElt
 {True iff the modular form f is zero}
    return forall{x : x in Eltseq(f) | IsZero(x)};
 end intrinsic;

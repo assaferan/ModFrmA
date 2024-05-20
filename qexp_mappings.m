@@ -58,7 +58,7 @@ function ComputeComplexMaps(f)
 end function;
 
 function ComputepAdicMaps(f, p)
-   assert Type(f) eq ModFrmElt;
+   assert Type(f) eq ModFrmAElt;
    R := BaseRing(Parent(PowerSeries(f,2)));
    L := pAdicField(p);
 
@@ -97,7 +97,7 @@ end function;
 function ComputeModpMapsUsingMaximalOrder(f, p)
    assert Type(p) eq RngIntElt;
    assert IsPrime(p) and p gt 0;
-   assert Type(f) eq ModFrmElt;
+   assert Type(f) eq ModFrmAElt;
 
    R := BaseRing(Parent(PowerSeries(f)));
    assert Type(R) in {FldNum, FldCyc};
@@ -167,7 +167,7 @@ function ComputeModpMaps(f, p)
 end function;
 
 function ModpReductionMaps(f, p) 
-   assert Type(f) eq ModFrmElt;
+   assert Type(f) eq ModFrmAElt;
    assert Type(p) eq RngIntElt;
    assert p gt 0 and IsPrime(p);
    return ComputeModpMaps(f,p);
@@ -175,13 +175,13 @@ end function;
 
 
 function pAdicEmbeddingMaps(f, p)
-   assert Type(f) eq ModFrmElt;
+   assert Type(f) eq ModFrmAElt;
    assert Type(p) eq RngIntElt;
    assert p gt 0 and IsPrime(p);
    return ComputepAdicMaps(f,p);
 end function;
 
 function ComplexEmbeddingMaps(f)
-   assert Type(f) eq ModFrmElt;
+   assert Type(f) eq ModFrmAElt;
    return ComputeComplexMaps(f);
 end function;

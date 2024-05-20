@@ -18,7 +18,7 @@ freeze;
    02/09/05 (CF) change to reflect new cyclo conventions  
    
    01/04/04 (WAS) - fixed bug in the require statement in 
-          "intrinsic AtkinLehnerOperator(M::ModFrm, q::RngIntElt)"
+          "intrinsic AtkinLehnerOperator(M::ModFrmA, q::RngIntElt)"
        
      
 
@@ -31,7 +31,7 @@ freeze;
    04/05/03 (WAS) - fixed bug in HeckeOperator (it said BaseField instead
                     of BaseRing at a certain point).
 
-   $Header: /home/was/magma/packages/ModFrm/code/RCS/operators.m,v 1.9 2002/10/20 06:30:02 was Exp was $
+   $Header: /home/was/magma/packages/ModFrmA/code/RCS/operators.m,v 1.9 2002/10/20 06:30:02 was Exp was $
 
    $Log: operators.m,v $
    Revision 1.9  2002/10/20 06:30:02  was
@@ -99,12 +99,12 @@ function field_of_fractions(R)
    end if;
 end function;
 
-intrinsic HeckeOperator(n::RngIntElt, f::ModFrmElt) -> ModFrmElt
+intrinsic HeckeOperator(n::RngIntElt, f::ModFrmAElt) -> ModFrmAElt
 {Apply the Hecke operator T_n to f.}
    return f*HeckeOperator(Parent(f),n);
 end intrinsic;
 
-intrinsic HeckeOperator(M::ModFrm, n::RngIntElt) -> AlgMatElt
+intrinsic HeckeOperator(M::ModFrmA, n::RngIntElt) -> AlgMatElt
 {Matrix representing the n-th Hecke operator on M.}
    //require IsGamma0(M) : 
    //  "Hecke operator computation currently only supported for Gamma_0(N).";
@@ -132,7 +132,7 @@ end intrinsic;
 function ApplyHeckeOperator(n, f)
    // The image of f under the n-th Hecke operator.
    assert Type(n) eq RngIntElt;
-   assert Type(f) eq ModFrmElt;
+   assert Type(f) eq ModFrmAElt;
    //assert IsGamma0(Parent(f)); // allow spaces with a single quadratic character
    if n eq 1 then
       return f;
@@ -143,7 +143,7 @@ function ApplyHeckeOperator(n, f)
    return Parent(f)!Tnf;
 end function;
 
-intrinsic AtkinLehnerEigenvalue(f::ModFrmElt, q::RngIntElt) -> RngElt
+intrinsic AtkinLehnerEigenvalue(f::ModFrmAElt, q::RngIntElt) -> RngElt
 {The eigenvalue of the Atkin-Lehner involution W_q on the cuspidal newform f.}
    if assigned f`elliptic_curve and not assigned f`mf_modular_symbols then
       require false : "Not yet programmed for elliptic curve newforms.";
@@ -182,7 +182,7 @@ function GaloisConjugatesOfPolynomial(f)
 end function;
 
 function ComputeHeckePolynomialOfModularSymbolsSpace(M, modsym, n, Proof)
-   assert Type(M) eq ModFrm;
+   assert Type(M) eq ModFrmA;
    assert Type(modsym) eq ModSym;
    assert Type(n) eq RngIntElt and n ge 1;
    assert Type(Proof) eq BoolElt;
@@ -204,7 +204,7 @@ function CharpolyOfEigenvalue(a)
 end function;
 
 function ComputeHeckePolynomialUsingEisensteinSeries(M,n)
-   assert Type(M) eq ModFrm;
+   assert Type(M) eq ModFrmA;
    assert IsEisenstein(M);
    assert GCD(Level(M),n) eq 1;
 
@@ -225,7 +225,7 @@ end function;
 
 
 function ComputeHeckePolynomialUsingModularSymbols(M,n, Proof)
-   assert Type(M) eq ModFrm;
+   assert Type(M) eq ModFrmA;
    assert Type(n) eq RngIntElt;
    assert Type(Proof) eq BoolElt;
 
@@ -256,7 +256,7 @@ end function;
 
 
 function ComputeHeckePolynomialUsingHeckeOperator(M, n, Proof)
-   assert Type(M) eq ModFrm;
+   assert Type(M) eq ModFrmA;
    assert Type(n) eq RngIntElt;
    assert Type(Proof) eq BoolElt;
    Tn := HeckeOperator(M,n);
@@ -267,7 +267,7 @@ function ComputeHeckePolynomialUsingHeckeOperator(M, n, Proof)
 end function;
 
 
-intrinsic HeckePolynomial(M::ModFrm, n::RngIntElt :
+intrinsic HeckePolynomial(M::ModFrmA, n::RngIntElt :
                   Proof := true) -> AlgMatElt
 {The characteristic polynomial of the n-th Hecke operator on M.}
    require n ge 1 : "Argument 2 must be at least 1.";
@@ -372,13 +372,6 @@ function Tn(N, eps, k, n, f)
    return f;
 end function;
 
-/*
-intrinsic UOperator(f::ModFrmElt, p::RngIntElt) -> ModFrmElt
-{The modular forms f(q^p).}
-   error "not written.";
-end intrinsic;
-*/
-
 // write each element of B2 as a linear combination
 // of the elements of B1.
 function PowerSeriesCoordinates(B1, B2)
@@ -405,7 +398,7 @@ function BottomBaseRing(R)
 end function;
 
 // These two intrisics added by Steve/MW
-intrinsic CuspidalProjection(f::ModFrmElt) -> ModFrmElt
+intrinsic CuspidalProjection(f::ModFrmAElt) -> ModFrmAElt
 {The projection of f onto the cuspidal part of the ambient space.}
    M:=Parent(f);
    R:=BaseRing(M);
@@ -432,7 +425,7 @@ intrinsic CuspidalProjection(f::ModFrmElt) -> ModFrmElt
    return C!Vector([psc[i] : i in [1..Dimension(C)]]); 
 end intrinsic;
 
-intrinsic EisensteinProjection(f::ModFrmElt) -> ModFrmElt
+intrinsic EisensteinProjection(f::ModFrmAElt) -> ModFrmAElt
 {The projection of f onto the Eisenstein part of the ambient space.}
    M:=Parent(f);
    R:=BaseRing(M);
@@ -509,7 +502,7 @@ end function;
 
 // Matrix of Wq on image of M at level Level(M)*t on the basis B, which
 // is returned as the second part.
-// M should be a ModFrm of even integral weight,
+// M should be a ModFrmA of even integral weight,
 // q should be prime and prec is the precision of computations.
 function WqOnImageOfNewSpace(M, q, t, prec)
    K := field_of_fractions(BaseRing(M));
@@ -539,7 +532,7 @@ function WqOnImageOfNewSpace(M, q, t, prec)
 end function;
 
 
-// M must be a cuspidal ModFrm of integral weight >= 2, q must be prime, 
+// M must be a cuspidal ModFrmA of integral weight >= 2, q must be prime, 
 function compute_Wq_cuspidal(M, q)
    if Dimension(M) eq 0 then
       return MatrixAlgebra(RationalField(),0)!1;
@@ -624,18 +617,18 @@ function get_Wq(M, q)
 end function;
 
 
-intrinsic AtkinLehnerOperator(q::RngIntElt,f::ModFrmElt) -> ModFrmElt
+intrinsic AtkinLehnerOperator(q::RngIntElt,f::ModFrmAElt) -> ModFrmAElt
 {Apply the AtkinLehnerOperator w_q to f. (Same result as f*w_q.)}
   return f*AtkinLehnerOperator(Parent(f),q);
 end intrinsic;
 
-intrinsic AtkinLehnerOperator(M::ModFrm) -> AlgMatElt
+intrinsic AtkinLehnerOperator(M::ModFrmA) -> AlgMatElt
 {Same as AtkinLehnerOperator(M,N) where N is the level of M}
    require Level(M) ne 1 : "Space has level 1, no sensible AtkinLehnerOperator";
    return AtkinLehnerOperator(M,Level(M));
 end intrinsic; 
 
-intrinsic AtkinLehnerOperator(M::ModFrm, q::RngIntElt) -> AlgMatElt
+intrinsic AtkinLehnerOperator(M::ModFrmA, q::RngIntElt) -> AlgMatElt
 {The matrix representing the q-th Atkin-Lehner involution W_q on M
 with respect to Basis(M).  At present M must be a cuspidal space of 
 modular forms for Gamma_0(N).  Note that the Atkin-Lehner operator

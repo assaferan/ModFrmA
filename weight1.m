@@ -146,7 +146,7 @@ forward compute_aplist_from_dihedral_data;
 
 // If the option return_dihedral_data:=m is set, then a second object is returned,
 // of the form [*<chi,list>*], where each list looks like <eps,1,chi,f0i,...>,
-// this data gets stored in f`wt1_dihedral_data for the corresponding ModFrmElt f.
+// this data gets stored in f`wt1_dihedral_data for the corresponding ModFrmAElt f.
 
 newdihedralforms:=function(N :eps:="all",prec:=0,return_aps:=true,return_dihedral_data:=false);
 
@@ -614,20 +614,20 @@ function formsdata0(arg : maxdim:=0, docheaptests:=false,
   // of the dimension, at the expense of giving us no q-expansions.
   // Note that if a test proves a dim is 0 then it's not cheap!
 
-  // 'arg' can be an integer N or a ModFrm space S (which must be the cusp subspace of a full space of wt 1)
+  // 'arg' can be an integer N or a ModFrmA space S (which must be the cusp subspace of a full space of wt 1)
   // In that case, S should already know its dihedral_forms. 
   // If these turn out not to generate all of S, then we will assign S`wt1_auxil_modsyms.
   if Type(arg) eq RngIntElt then 
      N := arg;
      SS := 0; // not used
-  elif Type(arg) eq ModFrm then
+  elif Type(arg) eq ModFrmA then
      SS := arg;
      assert Weight(SS) eq 1 and IsIdentical(SS, AmbientSpace(SS)`cusp);
      assert assigned SS`ambient_space`wt1_dihedral_forms;
      error if assigned SS`is_wt1_dihedral, "Why are we calling formsdata0 ??";
      error if assigned SS`dimension and SS`dimension ne -1, "How do we know the dimension ??";
      N := Level(SS);
-     error if not IsEmpty(chiset), "When feeding a ModFrm to formsdata0, not allowed to also specify a 'chiset'";
+     error if not IsEmpty(chiset), "When feeding a ModFrmA to formsdata0, not allowed to also specify a 'chiset'";
      chiset := [tup[1]: tup in SS`ambient_space`wt1_dihedral_forms];
      SS`is_wt1_dihedral := [ <chi,true> : chi in chiset ];
      SS`wt1_auxil_modsyms := [* <chi> : chi in chiset *];  
@@ -1085,7 +1085,7 @@ procedure compute_weight1_cusp_space( ~M : prec:=0)
   _ := formsdata0(S);  // assigns S`is_wt1_dihedral and S`wt1_auxil_modsyms
 end procedure;
 
-intrinsic DihedralForms(M::ModFrm) -> SeqEnum[ModFrmElt]
+intrinsic DihedralForms(M::ModFrmA) -> SeqEnum[ModFrmAElt]
 {For a space M of modular forms of weight 1, returns the cuspidal eigenforms 
 that arise from dihedral Galois representations (or twists of these)} 
 
@@ -1128,12 +1128,12 @@ that arise from dihedral Galois representations (or twists of these)}
   // Although some a_p's were computed by 'newdihedralforms', we don't store them, 
   // as they are sometimes very bulky but are reasonably quick to recompute.
 
-  // Create a ModFrmElt for each form, assigning the data
+  // Create a ModFrmAElt for each form, assigning the data
   M`wt1_dihedral_forms := [* <chi,[**]> : chi in charsM *];
   for i := 1 to #data do 
     assert IsIdentical(data[i][1], M`wt1_dihedral_forms[i][1]); // check the characters still come in the right order
     for j := 1 to #data[i][2] do 
-      f := New(ModFrmElt);
+      f := New(ModFrmAElt);
       f`weight := 1;
       f`wt1_dihedral_data := data[i][2][j]; 
           // data[i][2][j] is [*chi,m,phi,f0i,...*] where m is the exponent (old --> new), 
@@ -1276,7 +1276,7 @@ end intrinsic;
 /*********************************************************************************
 
 // TO DO (??)
-intrinsic DihedralSubspace(M::ModFrm) -> ModFrm
+intrinsic DihedralSubspace(M::ModFrmA) -> ModFrmA
 {For a space M of modular forms of weight 1, returns the subspace spanned 
  (over some base extension) by cuspidal eigenforms that arise from dihedral 
  Galois representations (or twists of these)} 

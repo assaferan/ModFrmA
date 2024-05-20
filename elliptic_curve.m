@@ -8,7 +8,7 @@ freeze;
                          
    FILE: elliptic_curve.m
 
-   $Header: /home/was/magma/packages/ModFrm/code/RCS/elliptic_curve.m,v 1.2 2002/10/26 22:49:27 was Exp $
+   $Header: /home/was/magma/packages/ModFrmA/code/RCS/elliptic_curve.m,v 1.2 2002/10/26 22:49:27 was Exp $
 
    $Log: elliptic_curve.m,v $
    Revision 1.2  2002/10/26 22:49:27  was
@@ -23,11 +23,11 @@ freeze;
 
 import "newforms.m" : GiveNewformItsParent;
 
-intrinsic ModularForm(E::CrvEll) -> ModFrmElt
+intrinsic ModularForm(E::CrvEll) -> ModFrmAElt
 {The modular form associated to E.}
    require Type(BaseRing(E)) in {FldRat, RngInt} : 
         "Argument 1 must be defined over the rationals.";
-   f := New(ModFrmElt);
+   f := New(ModFrmAElt);
    M := ModularForms(Gamma0(Conductor(E)),2);
    f`parent := M;
    f`elliptic_curve := E;
@@ -39,7 +39,7 @@ end intrinsic;
 
 
 
-intrinsic EllipticCurve(f::ModFrmElt) -> CrvEll
+intrinsic EllipticCurve(f::ModFrmAElt) -> CrvEll
 {An elliptic curve with associated modular form f.}
    require (not IsRingOfAllModularForms(Parent(f))) and
            Type(BaseRing(Parent(f))) in {FldRat, RngInt} and

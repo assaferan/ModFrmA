@@ -8,7 +8,7 @@ freeze;
                          
    FILE: abelian_varieties.m 
 
-   $Header: /home/was/magma/packages/ModFrm/code/RCS/abelian_varieties.m,v 1.3 2002/08/26 20:11:25 was Exp was $
+   $Header: /home/was/magma/packages/ModFrmA/code/RCS/abelian_varieties.m,v 1.3 2002/08/26 20:11:25 was Exp was $
 
    $Log: abelian_varieties.m,v $
    Revision 1.3  2002/08/26 20:11:25  was
@@ -25,7 +25,7 @@ freeze;
 
 import "modular_symbols.m" : MF_NewformModularSymbols;
 
-intrinsic TorsionBound(f::ModFrmElt, n::RngIntElt) -> RngIntElt
+intrinsic TorsionBound(f::ModFrmAElt, n::RngIntElt) -> RngIntElt
 {A bound on the size of the rational torsion subgroup of the
 associated abelian variety A_f obtained by looking at the first n good odd primes.} 
 

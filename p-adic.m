@@ -23,7 +23,7 @@ freeze;
 
 
 
-intrinsic Slopes(M::ModFrm : Proof := true) -> SeqEnum
+intrinsic Slopes(M::ModFrmA : Proof := true) -> SeqEnum
 {The slopes of the Newton polygon of the characteristic polynomial f of
 the Hecke operator T_p acting on M, where M is defined over pAdicField(p).  
 This is a list of the valuations of the p-adic roots of f.}

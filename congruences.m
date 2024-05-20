@@ -96,7 +96,7 @@ function IndexInSaturation(B, prec, N)
    return AbelianGroup([S[i,i] : i in [1..Min(Nrows(S),Ncols(S))] | S[i,i] gt 1 ]);
 end function;
 
-intrinsic CongruenceGroup(M1::ModFrm, M2::ModFrm) -> GrpAb
+intrinsic CongruenceGroup(M1::ModFrmA, M2::ModFrmA) -> GrpAb
 {A group that measures all congruences (to precision prec)
 between some integral modular form in M1 and some modular form in M2.}
    require Characteristic(BaseRing(M1)) eq 0 and Characteristic(BaseRing(M2)) eq 0 : 
@@ -105,7 +105,7 @@ between some integral modular form in M1 and some modular form in M2.}
          1 + Max(PrecisionBound(M1 : Exact := false), PrecisionBound(M2 : Exact := false)));
 end intrinsic;
 
-intrinsic CongruenceGroup(M1::ModFrm, M2::ModFrm, prec::RngIntElt) -> GrpAb
+intrinsic CongruenceGroup(M1::ModFrmA, M2::ModFrmA, prec::RngIntElt) -> GrpAb
 {"} // "
    require Characteristic(BaseRing(M1)) eq 0 and Characteristic(BaseRing(M2)) eq 0 : 
          "Arguments 1 and 2 must have characteristic 0.";
@@ -114,7 +114,7 @@ intrinsic CongruenceGroup(M1::ModFrm, M2::ModFrm, prec::RngIntElt) -> GrpAb
                             [R| PowerSeries(f,prec) : f in Basis(M2)]],  prec, 1);
 end intrinsic;
 
-intrinsic CongruenceGroupAnemic(M1::ModFrm, M2::ModFrm, prec::RngIntElt) -> GrpAb
+intrinsic CongruenceGroupAnemic(M1::ModFrmA, M2::ModFrmA, prec::RngIntElt) -> GrpAb
 {A group that measures all possible congruences to precision prec
 between some integral modular form in M1 and some modular form in M2, where
 we only consider coefficients of q^n when n is 0 or coprime to the levels
@@ -141,7 +141,7 @@ The given space(s) of modular symbols must be cuspidal.}
    return IndexInSaturation([qIntegralBasis(M1,prec), qIntegralBasis(M2,prec)], prec, 1);
 end intrinsic;
 
-intrinsic CongruenceGroup(M1::ModSym, M2::ModFrm, prec::RngIntElt) -> GrpAb
+intrinsic CongruenceGroup(M1::ModSymA, M2::ModFrmA, prec::RngIntElt) -> GrpAb
 {"} // "
    require Type(BaseField(M1)) eq FldRat : 
              "The base field of argument 1 must be Q.";
@@ -153,7 +153,7 @@ intrinsic CongruenceGroup(M1::ModSym, M2::ModFrm, prec::RngIntElt) -> GrpAb
                             prec, 1);
 end intrinsic;
 
-intrinsic CongruenceGroup(M1::ModFrm, M2::ModSym, prec::RngIntElt) -> GrpAb
+intrinsic CongruenceGroup(M1::ModFrmA, M2::ModSymA, prec::RngIntElt) -> GrpAb
 {Same as CongruenceGroup(M2,M1,prec)}
    require Characteristic(BaseRing(M1)) eq 0 : 
              "The base ring of argument 1 must have characteristic 0.";
@@ -190,7 +190,7 @@ The given space(s) of modular symbols must be cuspidal.}
                   Level(M1)*Level(M2));
 end intrinsic;
 
-intrinsic CongruenceGroupAnemic(M1::ModSym, M2::ModFrm, prec::RngIntElt) -> GrpAb
+intrinsic CongruenceGroupAnemic(M1::ModSymA, M2::ModFrmA, prec::RngIntElt) -> GrpAb
 {"} // "
    require Type(BaseField(M1)) eq FldRat : 
              "The base field of argument 1 must be Q.";
@@ -203,7 +203,7 @@ intrinsic CongruenceGroupAnemic(M1::ModSym, M2::ModFrm, prec::RngIntElt) -> GrpA
 			    prec, Level(M1)*Level(M2));
 end intrinsic;
 
-intrinsic CongruenceGroupAnemic(M1::ModFrm, M2::ModSym, prec::RngIntElt) -> GrpAb
+intrinsic CongruenceGroupAnemic(M1::ModFrmA, M2::ModSymA, prec::RngIntElt) -> GrpAb
 {Same as CongruenceGroupAnemic(M2,M1,prec)}
    require Characteristic(BaseRing(M1)) eq 0 : 
              "The base ring of argument 1 must have characteristic 0.";
@@ -216,7 +216,7 @@ end intrinsic;
 
 ///////////////////////////////////////////
 
-intrinsic CongruenceGroup(f1::ModFrmElt, f2::ModFrmElt) -> GrpAb
+intrinsic CongruenceGroup(f1::ModFrmAElt, f2::ModFrmAElt) -> GrpAb
 {For newforms f1 and f2, returns the CongruenceGroup of the corresponding newform spaces.}
    require Characteristic(BaseRing(Parent(f1))) eq 0 and Characteristic(BaseRing(Parent(f2))) eq 0 : 
          "Arguments 1 and 2 must have characteristic 0.";
@@ -224,7 +224,7 @@ intrinsic CongruenceGroup(f1::ModFrmElt, f2::ModFrmElt) -> GrpAb
    return CongruenceGroup(Parent(f1),Parent(f2));
 end intrinsic;
 
-intrinsic CongruenceGroup(f1::ModFrmElt, f2::ModFrmElt, prec::RngIntElt) -> GrpAb
+intrinsic CongruenceGroup(f1::ModFrmAElt, f2::ModFrmAElt, prec::RngIntElt) -> GrpAb
 {"} // "
    require Characteristic(BaseRing(Parent(f1))) eq 0 and Characteristic(BaseRing(Parent(f2))) eq 0 : 
          "Arguments 1 and 2 must have characteristic 0.";
@@ -232,7 +232,7 @@ intrinsic CongruenceGroup(f1::ModFrmElt, f2::ModFrmElt, prec::RngIntElt) -> GrpA
    return CongruenceGroup(Parent(f1),Parent(f2),prec);
 end intrinsic;
 
-intrinsic CongruenceGroupAnemic(f1::ModFrmElt, f2::ModFrmElt, prec::RngIntElt) -> GrpAb
+intrinsic CongruenceGroupAnemic(f1::ModFrmAElt, f2::ModFrmAElt, prec::RngIntElt) -> GrpAb
 {For newforms f1 and f2, returns CongruenceGroupAnemic of the corresponding newform spaces.}
    require Characteristic(BaseRing(Parent(f1))) eq 0 and Characteristic(BaseRing(Parent(f2))) eq 0 : 
          "Arguments 1 and 2 must have characteristic 0.";

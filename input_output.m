@@ -30,7 +30,7 @@ function PrintSideways(s)
    return ans;
 end function;
 
-intrinsic Print(M::ModFrm, level::MonStgElt)
+intrinsic Print(M::ModFrmA, level::MonStgElt)
    {}
    
    if IsRingOfAllModularForms(M) then
@@ -66,7 +66,7 @@ intrinsic Print(M::ModFrm, level::MonStgElt)
    end if;
 end intrinsic;
 
-intrinsic Print(f::ModFrmElt, level::MonStgElt)
+intrinsic Print(f::ModFrmAElt, level::MonStgElt)
    {}
  
    if level ne "Minimal" or assigned f`q_expansion then
@@ -78,7 +78,7 @@ intrinsic Print(f::ModFrmElt, level::MonStgElt)
    end if;
 end intrinsic;
 
-intrinsic AssignNames(~M::ModFrm, s::[MonStgElt])
+intrinsic AssignNames(~M::ModFrmA, s::[MonStgElt])
 {Assign the string in S to be the variable name 
  used to print q-expansions of elements of M}
    require #s eq 1 : "Number of names must be 1.";
@@ -93,32 +93,8 @@ intrinsic AssignNames(~M::ModFrm, s::[MonStgElt])
 end intrinsic;
 
 // This looks like nonsense
-intrinsic Name(M::ModFrm,i::RngIntElt) -> RngSerPowElt
+intrinsic Name(M::ModFrmA,i::RngIntElt) -> RngSerPowElt
    {Name the ith generator.}
    require i eq 1 : "Argument 2 must be 1";
    return PowerSeriesRing(BaseRing(M)).1;
 end intrinsic;
-
-
-/*
-intrinsic Write(M::ModFrm, file::File)
-{Write the space M of modular forms to the file.}
-   error "Not written";
-end intrinsic;
-
-intrinsic ReadModFrm(file::File) -> ModFrm
-{Read the next space of modular forms from the file.}
-   error "Not written";
-end intrinsic;
-
-intrinsic Write(f::ModFrmElt, file::File)
-{Write the modular form f to the file.}
-   error "Not written";
-end intrinsic;
-
-intrinsic ReadModFrmElt(file::File) -> ModFrmElt
-{Read the next modular form from the file.}
-   error "Not written";
-end intrinsic;
-
-*/
