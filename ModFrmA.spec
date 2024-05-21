@@ -6,7 +6,6 @@
         cohen_oesterle_formulas.m
 	congruences.m
 	creation.m
-	degeneracy_maps.m
         eisenstein.m
         elliptic_curve.m
         half-integral.m
